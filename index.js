@@ -226,7 +226,7 @@ fs.readFile('record.json', 'utf-8', function (err, data) {
 });
 });
 
-app.listen(8090)
+app.listen(80)
 
 
 var ws = require("nodejs-websocket")
