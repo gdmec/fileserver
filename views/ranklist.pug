@@ -1,0 +1,12 @@
+html
+  head
+    title= 排行榜
+  body
+    p 挖雷
+      ul
+        each val in mine
+            li #{val.name} - #{val.score}  -  #{val.time}
+    p 2048
+      ul
+        each val in g2048
+            li #{val.name} - #{val.score}  -  #{val.time}
