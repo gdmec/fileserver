@@ -7,9 +7,9 @@ const wm = require('./watermark.js')
 
 const uploaddir = './uploads'
 var schedule = require("node-schedule");  
-schedule.scheduleJob('5 * * * * *',function(){
-  saveRecord()
-})
+// schedule.scheduleJob('5 * * * * *',function(){
+//   saveRecord()
+// })
 let recordFile='gameRecord.txt'
 let gameRecord={}
 fs.readFile(recordFile,(err,data)=>{
