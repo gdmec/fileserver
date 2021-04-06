@@ -3,7 +3,9 @@ var express    = require('express')
 var serveIndex = require('serve-index')
 const bodyParser = require("body-parser")
 var cors=require('cors');
+const wm = require('./watermark.js')
 
+const uploaddir = './uploads'
 var schedule = require("node-schedule");  
 schedule.scheduleJob('5 * * * * *',function(){
   saveRecord()
@@ -17,7 +19,7 @@ fs.readFile(recordFile,(err,data)=>{
 })
 
 var app = express()
-app.use(express.static('../uploads'))
+app.use(express.static(uploaddir))
 app.use(express.static('.'))
 app.all("*", function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -45,7 +47,7 @@ const multer  = require('multer');
 var storage = multer.diskStorage({
   //设置上传后文件路径，会自动创建一个upload目录，与jswork同级目录。
   destination: function (req, file, cb) {
-    cb(null, '../uploads')
+    cb(null, uploaddir)
   }, 
   //给上传文件重命名，获取添加后缀名
   filename: function (req, file, cb) {
@@ -62,6 +64,15 @@ app.post('/upload',upload.single('file'),function(req,res,next){
   res.json('/'+file.filename);//这行代码必须要有，否则Browser会处于wait状态。
 })
 
+//单文件上传获取信息
+app.post('/watermark',upload.single('file'),function(req,res,next){
+  var file=req.file;
+  console.log("original file name is "+file.originalname);
+  console.log("file name is " + file.filename);
+  console.log(wm)
+  wm(uploaddir+'/'+file.filename,'watermark.png')
+  res.json('/'+file.filename);//这行代码必须要有，否则Browser会处于wait状态。
+})
 
 app.post('/formBuilder', function (req, res) {
   // res.header("Access-Control-Allow-Origin", "*");
