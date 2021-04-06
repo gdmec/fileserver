@@ -235,17 +235,28 @@ let id=0
 var server = ws.createServer(function (conn) {
     id++
     conn.name = "p"+id
-    broadcast(server,'有新人加入.')
+
+    //broadcast(server,'有新人加入.')
     conn.on("text", function (str) {
-        if(str.slice(0,9)=='nickname|'){
+       console.log(str)
+        let msg ={}
+        if(str.slice(0,9)=='nickName|'){
           conn.name=str.split('|')[1]
-          broadcast(server,conn.name+'上线了。')
+          conn.avatar=str.split('|')[3]
+          msg.name = conn.name
+          msg.avatar = conn.avatar
+          msg.msg = "上线了"
+          broadcast(server,JSON.stringify(msg))
           return
         }
-        broadcast(server,conn.name+':'+str)
+        msg.name = conn.name
+        msg.avatar = conn.avatar
+        msg.msg = str
+        broadcast(server,JSON.stringify(msg))
     })
     conn.on('connect',function(){
         conn.name = "name"
+        conn.avatar= "avatar"
     })
     conn.on("close", function (code, reason) {
         console.log("Connection closed")
