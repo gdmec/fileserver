@@ -71,7 +71,7 @@ app.post('/watermark',upload.single('file'),function(req,res,next){
   console.log("file name is " + file.filename);
   console.log(wm)
   wm(uploaddir+'/'+file.filename,'watermark.png')
-  res.json('/'+file.filename);//这行代码必须要有，否则Browser会处于wait状态。
+  res.json({filename:file.filename});//这行代码必须要有，否则Browser会处于wait状态。
 })
 
 app.post('/formBuilder', function (req, res) {
